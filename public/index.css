@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    [x-cloak] {
+        @apply hidden !important;
+    }
+}
+
+@layer components {
+    .spinner {
+        @apply animate-spin w-16 h-16 border-4 border-blue-500;
+        border-top-color: transparent;
+        border-radius: 50%;
+    }
+    .selected-disabled option:not([disabled]) {
+        @apply text-gray-700;
+    }
+    .selected-disabled:invalid, .selected-disabled option[disabled] {
+        @apply text-gray-400;
+    }
+}

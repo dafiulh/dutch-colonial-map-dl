@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="/index.css"/>
+    <title>Dutch Colonial Map Downloader</title>
+  </head>
+  <body>
+    <header class="text-gray-200 bg-blue-900">
+      <div class="max-w-6xl mx-auto flex flex-wrap px-10 py-8 flex-col md:flex-row items-center justify-between">
+        <a class="flex font-medium items-center" href="/">
+          <svg class="w-10 h-10 p-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="8 17 12 21 16 17"/>
+            <line x1="12" y1="12" x2="12" y2="21"/>
+            <path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/>
+          </svg>
+          <span class="ml-2 text-xl">DCM Downloader</span>
+        </a>
+        <div class="items-center mt-6 md:mt-0 space-x-7">
+          <a href="mailto:dafiulhaq97@gmail.com" rel="noopener noreferrer">Contact Us</a>
+          <a href="https://github.com/dafiulh/dutch-colonial-map-dl" rel="noopener noreferrer" target="_blank">GitHub</a>
+        </div>
+      </div>
+    </header>
+    <main class="text-gray-200 bg-blue-900">
+      <div class="flex flex-col items-center w-full md:w-2/3 mx-auto pt-20 pb-32 px-12 text-center" x-data="processor()">
+        <h1 class="text-3xl sm:text-4xl mb-16 font-medium">Dutch Colonial Map</h1>
+        <div class="flex max-w-full mb-5 space-x-3">
+          <input 
+            class="appearance-none w-1/2 border px-4 py-2 rounded text-gray-700 placeholder-gray-400 focus:outline-none"
+            x-model="name"
+            @focus="isDownloadable = false"
+            type="text"
+            placeholder="Map name"
+            required
+          >
+          <div class="relative text-gray-700 w-1/2">
+            <select 
+              class="selected-disabled appearance-none w-full border px-4 py-2 pr-8 rounded focus:outline-none"
+              @change="quality = $event.target.value"
+              @focus="isDownloadable = false"
+              required
+            >
+              <option disabled selected value="">Quality</option>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
+              <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <button 
+          class="bg-blue-500 focus:outline-none focus:shadow-outline font-bold hover:bg-blue-600 px-4 py-2 rounded text-white w-48"
+          :class="{ 'bg-blue-600': isLoading }"
+          type="button"
+          :disabled="isLoading"
+          @click="start($dispatch)"
+        >Start</button>
+        <button 
+          class="bg-indigo-500 focus:outline-none focus:shadow-outline font-bold hover:bg-indigo-600 mt-10 px-12 py-5 rounded text-lg text-white"
+          type="button"
+          x-show.transition="isDownloadable"
+          @click="download()"
+          x-cloak
+        >Download Now</button>
+        <div class="spinner mt-24" x-show.transition.opacity.duration.400ms="isLoading" x-cloak></div>
+      </div>
+    </main>
+    <svg class="text-blue-900 fill-current -mt-px transform rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 126">
+      <path d="M685.6,38.8C418.7-11.1,170.2,9.9,0,30v96h1440V30C1252.7,52.2,1010,99.4,685.6,38.8z"/>
+    </svg>
+    <section class="text-gray-800">
+      <div class="px-12 py-24 mx-auto">
+        <div class="text-center mb-20">
+          <h1 class="sm:text-3xl text-2xl font-medium text-gray-900">How to get the map name?</h1>
+        </div>
+        <div class="mx-auto md:py-6 md:w-3/4 lg:w-3/5 max-w-3xl">
+          <div class="flex relative pb-12">
+            <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
+              <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
+            </div>
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-800 z-10"></div>
+            <div class="flex-grow pl-4">
+              <h2 class="font-medium text-sm mb-1 tracking-wider">STEP 1</h2>
+              <p class="leading-relaxed">Go to <a class="text-blue-800 hover:text-indigo-600" href="http://maps.library.leiden.edu" rel="noopener noreferrer" target="_blank">Dutch Colonial maps - Leiden University Libraries</a>.</p>
+            </div>
+          </div>
+          <div class="flex relative pb-12">
+            <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
+              <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
+            </div>
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-800 z-10"></div>
+            <div class="flex-grow pl-4">
+              <h2 class="font-medium text-sm mb-1 tracking-wider">STEP 2</h2>
+              <p class="leading-relaxed">Enter the location query you want to search, choose the country, then press the "search" button.</p>
+            </div>
+          </div>
+          <div class="flex relative pb-12">
+            <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
+              <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
+            </div>
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-800 z-10"></div>
+            <div class="flex-grow pl-4">
+              <h2 class="font-medium text-sm mb-1 tracking-wider">STEP 3</h2>
+              <p class="leading-relaxed">Choose a location from one of the search results.</p>
+            </div>
+          </div>
+          <div class="flex relative">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-800 z-10"></div>
+            <div class="flex-grow pl-4">
+              <h2 class="font-medium text-sm mb-1 tracking-wider">FINISH</h2>
+              <p class="leading-relaxed">Choose a map. You will see the name with a bold text on the right of the map, copy that name, then paste to the input above!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="text-gray-800">
+      <div class="flex mb-3 justify-center">
+        <div class="w-28 h-1 rounded-full bg-blue-900"></div>
+      </div>
+      <div class="px-5 py-8 md:py-10">
+        <p class="text-center">© 2020 DCM Downloader, made with ❤ by 
+          <a class="text-blue-800 hover:text-indigo-600" href="https://github.com/dafiulh" rel="noopener noreferrer" target="_blank">dafiulh</a>
+        </p>
+      </div>
+    </footer>
+    <div 
+      class="bg-red-500 bottom-0 fixed m-6 px-6 py-4 right-0 rounded shadow-md text-white z-50"
+      x-data="errorAlert()"
+      x-show.transition="show"
+      @show-error.window="show = true; message = $event.detail"
+      x-cloak
+    >
+      <span class="align-middle inline-block mr-8">
+        <b class="capitalize">Error!</b> <span x-text="message"></span>
+      </span>
+      <span class="absolute cursor-pointer font-semibold leading-none mr-6 mt-4 right-0 text-2xl top-0" @click="show = false">×</span>
+    </div>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <script type="module" src="/_dist_/main.js"></script>
+  </body>
+</html>
