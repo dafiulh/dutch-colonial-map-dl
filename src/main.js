@@ -8,12 +8,12 @@ import {
     arrayToMatrix
 } from './utils';
 
+// TODO: user custom division area
 const divisionArea = {
     low: [1, 1],
     medium: [1, 2],
     high: [2 ,2]
 };
-// TODO: user custom division area
 
 window.processor = () => ({
     name: '',
@@ -22,6 +22,7 @@ window.processor = () => ({
     isDownloadable: false,
     downloadUrl: '',
     start($dispatch) {
+        // prevent multiple processing
         if (this.isLoading) {
             return;
         }
@@ -35,6 +36,7 @@ window.processor = () => ({
 
         const mapName = this.name;
         const mapQlt = this.quality;
+        // generate regions with selected map quality
         const regions = generateRegions.apply(null, divisionArea[mapQlt]);
         const fetchPromises = [];
 
@@ -74,6 +76,7 @@ window.processor = () => ({
             this.isLoading = false;
         });
     },
+    // download image in jpeg format
     download() {
         const link = document.createElement('a');
 

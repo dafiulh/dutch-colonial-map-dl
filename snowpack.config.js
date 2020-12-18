@@ -10,6 +10,7 @@ module.exports = {
       input: [".css"],
       output: [".css"]
     }],
+    // plugin to optimize assets
     ["@snowpack/plugin-optimize"]
   ],
   devOptions: {
@@ -17,6 +18,7 @@ module.exports = {
     open: "none"
   },
   buildOptions: {
+    // remove previous build folder before build
     clean: true
   }
 };
