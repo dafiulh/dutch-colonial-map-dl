@@ -2,7 +2,6 @@ import 'alpinejs';
 import axios from 'axios';
 import {
   generateRegions,
-  requestUrl,
   blobToBase64,
   combineImages,
   arrayToMatrix
@@ -41,8 +40,12 @@ window.processor = () => ({
     const fetchPromises = [];
 
     regions.forEach((region) => {
+      // it's highly recommended to create your own proxy server
+      // you can upload 'proxy' folder to heroku, replit, etc., then change the url hostname below
+      const requestUrl = `https://dcmdl-proxy.dafiulh.repl.co/${mapName}/${region}`;
+
       fetchPromises.push(
-          axios.get(requestUrl(mapName, region), {
+          axios.get(requestUrl, {
             responseType: 'blob'
           })
       );

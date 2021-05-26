@@ -1,0 +1,11 @@
+{
+  "name": "my-proxy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  }
+}

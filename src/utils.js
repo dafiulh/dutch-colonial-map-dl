@@ -17,14 +17,6 @@ export function generateRegions(horizontalDiv, verticalDiv) {
   return regions;
 }
 
-export function requestUrl(name, region) {
-  // TODO: make a request without using proxy
-  const proxy = 'https://cors-anywhere.herokuapp.com';
-  const baseUrl = 'http://maps.library.leiden.edu/fcgi-bin/iipsrv.fcgi';
-
-  return `${proxy}/${baseUrl}?FIF=/home/maps/tif/${name}.tif&rgn=${region}&cvt=jpeg`;
-}
-
 // combine multiple images into one using canvas
 // rowOfSources contains "two dimensional array", sub array (row) as the x axis
 export function combineImages(rowsOfSources = [], format = 'image/png') {
